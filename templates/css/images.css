@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f0f2f5; /* Светло-серый фон */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    margin: 0;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+.container {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 40px;
+    width: 100%;
+    max-width: 800px; /* Увеличим ширину контейнера для таблицы */
+    text-align: center;
+}
+
+h1 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.subtitle {
+    font-size: 16px;
+    color: #777;
+    margin-bottom: 30px;
+}
+
+.upload-tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    font-weight: 500;
+    font-size: 17px;
+}
+
+.upload-tabs span, .upload-tabs .tab-link {
+    padding: 8px 15px;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.3s ease;
+    text-decoration: none; /* Убираем подчеркивание у ссылки */
+}
+
+.upload-tabs span:hover, .upload-tabs .tab-link:hover {
+    color: #007bff;
+}
+
+.upload-tabs .active-tab {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+}
+
+/* Стили для таблицы изображений */
+.images-table-container {
+    width: 100%;
+    overflow-x: auto; /* Для прокрутки на маленьких экранах */
+    margin-top: 20px;
+}
+
+.images-table {
+    width: 100%;
+    border-collapse: collapse; /* Убираем двойные границы */
+    text-align: left;
+    font-size: 15px;
+}
+
+.images-table thead th {
+    background-color: #f5f5f5; /* Светлый фон для заголовков */
+    padding: 12px 15px;
+    color: #555;
+    font-weight: 600;
+    border-bottom: 1px solid #eee;
+}
+
+.images-table tbody td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    color: #444;
+    vertical-align: middle; /* Выравнивание по центру по вертикали */
+}
+
+.images-table tbody tr:last-child td {
+    border-bottom: none; /* Убираем границу у последней строки */
+}
+
+.images-table tbody tr:hover {
+    background-color: #f9f9f9; /* Легкое выделение при наведении */
+}
+
+.table-icon {
+    color: #28a745; /* Зеленый для иконки флажка */
+    width: 18px; /* Размер иконки */
+    height: 18px;
+    vertical-align: middle; /* Выравнивание по центру */
+}
+
+.file-name {
+    font-weight: 500;
+    color: #333;
+}
+
+.image-url {
+    color: #007bff; /* Синий для ссылок */
+    text-decoration: none;
+    word-break: break-all; /* Перенос длинных URL */
+}
+
+.image-url:hover {
+    text-decoration: underline;
+}
+
+.delete-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex; /* Для центрирования иконки */
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.delete-button:hover {
+    background-color: #ffebeb; /* Легкий красный фон при наведении */
+}
+
+.delete-button i {
+    color: #dc3545; /* Красный цвет для иконки корзины */
+    width: 18px;
+    height: 18px;
+}
+
+.no-images-message {
+    text-align: center;
+    padding: 30px;
+    color: #888;
+    font-style: italic;
+}
+
+/* В случае, если вы объединяете CSS для upload и images,
+   стили для upload-specific элементов (например, .upload-area, .browse-button)
+   должны быть включены здесь же.
+   Я их опущу для краткости, так как мы "вернулись" к images.
+*/

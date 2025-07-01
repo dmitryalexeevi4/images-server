@@ -47,14 +47,14 @@ document.addEventListener('DOMContentLoaded', () => {
             // Валидация по типу файла
             if (!ALLOWED_FILE_TYPES.includes(fileType)) {
                 isValid = false;
-                errorMessage = 'Upload failed'; // Как на скриншоте
+                errorMessage = 'Upload failed';
                 supportText.innerHTML = `Only support .jpg, .png and .gif.<br>Maximum file size is ${MAX_FILE_SIZE_MB}MB`;
             }
 
             // Валидация по размеру файла (выполняется только если тип файла уже правильный или независимо)
             if (fileSizeMB > MAX_FILE_SIZE_SIZE_MB) {
                 isValid = false;
-                errorMessage = 'Upload failed'; // Как на скриншоте
+                errorMessage = 'Upload failed';
                 supportText.innerHTML = `File size exceeds ${MAX_FILE_SIZE_MB}MB.<br>Only support .jpg, .png and .gif.`; // Дополнительное сообщение
             }
 

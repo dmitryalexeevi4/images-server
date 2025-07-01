@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Галерея изображений</title>
+    <link rel="stylesheet" href="templates/css/images.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Upload Photos</h1>
+        <p class="subtitle">Upload selfies, memes, or any fun pictures here.</p>
+
+        <div class="upload-tabs">
+            <a href="/upload" class="tab-link">Upload</a>
+            <span class="active-tab">Images</span>
+        </div>
+
+        <div class="images-table-container">
+            <table class="images-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Url</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for img in images %}
+                    <tr id="image-row-{{ img.name | replace('.', '-') }}"> {# Добавляем ID для удобства удаления строки #}
+                        <td><i data-feather="check-square" class="table-icon"></i></td> <td class="file-name">{{ img.name }}</td>
+                        <td><a href="{{ img.url }}" target="_blank" class="image-url">{{ img.url }}</a></td>
+                        <td>
+                            <button class="delete-button" data-filename="{{ img.name }}">
+                                <i data-feather="trash-2"></i> </button>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4" class="no-images-message">No images uploaded yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Инициализация Feather Icons после загрузки DOM
+        document.addEventListener('DOMContentLoaded', () => {
+            feather.replace();
+
+            const deleteButtons = document.querySelectorAll('.delete-button');
+
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', async (event) => {
+                    const fileNameToDelete = event.currentTarget.dataset.filename;
+
+                    if (confirm(`Вы уверены, что хотите удалить файл "${fileNameToDelete}"?`)) {
+                        try {
+                            const response = await fetch(`/delete-image/${fileNameToDelete}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            });
+
+                            if (response.ok) {
+                                // Если удаление успешно, удаляем строку из таблицы
+                                const rowToRemove = document.getElementById(`image-row-${fileNameToDelete.replace('.', '-')}`);
+                                if (rowToRemove) {
+                                    rowToRemove.remove();
+                                }
+                                alert(`Файл "${fileNameToDelete}" успешно удален.`);
+
+                                // Проверяем, остались ли изображения
+                                const tbody = document.querySelector('.images-table tbody');
+                                if (tbody.children.length === 0 || (tbody.children.length === 1 && tbody.children[0].classList.contains('no-images-message'))) {
+                                    // Если нет строк или осталась только строка "No images", добавляем ее
+                                    if (!document.querySelector('.no-images-message')) {
+                                         const noImagesRow = document.createElement('tr');
+                                         noImagesRow.innerHTML = '<td colspan="4" class="no-images-message">No images uploaded yet.</td>';
+                                         tbody.appendChild(noImagesRow);
+                                    }
+                                }
+
+                            } else {
+                                const errorData = await response.json();
+                                alert(`Не удалось удалить файл: ${errorData.detail || response.statusText}`);
+                            }
+                        } catch (error) {
+                            console.error('Ошибка при удалении файла:', error);
+                            alert('Произошла ошибка при попытке удаления файла.');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -26,6 +26,10 @@ logging.basicConfig(
 
 app = FastAPI()
 
+image_dir = Path("images")
+image_dir.mkdir(exist_ok=True)
+
+app.mount("/images", StaticFiles(directory=image_dir), name="images")
 app.mount("/templates/css", StaticFiles(directory="templates/css"), name="templates/css")
 app.mount("/templates/page_pics", StaticFiles(directory="templates/page_pics"), name="templates/page_pics")
 app.mount("/templates/js", StaticFiles(directory="templates/js"), name="templates/js")
@@ -36,8 +40,6 @@ templates = Jinja2Templates(directory="templates")
 MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024  # 5 MB
 ALLOWED_MIME_TYPES = ["image/jpeg", "image/png", "image/gif"]
 
-image_dir = Path("images")
-image_dir.mkdir(exist_ok=True)
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
@@ -48,33 +50,6 @@ async def read_root(request: Request):
 async def upload_img(request: Request):
     return templates.TemplateResponse("upload.html", {"request": request})
 
-
-# @app.post("/upload/")
-# async def upload_img(request: Request, file: UploadFile = File(...)):
-#     print(f'Файл получен {file.filename}')
-#     my_file = Path(file.filename)
-#     if is_allowed_file(my_file):
-#         print('Верное расширение')
-#     else:
-#         logging.error('Выбрали файл с не верным расширением')
-#         print('НЕ верное расширение')
-#
-#     content = await file.read(MAX_FILE_SIZE + 1)
-#     size = len(content)
-#     if size < MAX_FILE_SIZE:
-#         print(f"Длина изображения подходит {size}")
-#
-#     new_file_name = get_unique_name(my_file)
-#     print(f"{new_file_name}")
-#
-#     image_dir = Path("images")
-#     image_dir.mkdir(exist_ok=True)
-#     save_path = image_dir / new_file_name
-#
-#     save_path.write_bytes(content)
-#     print(f"Файл {str(save_path)} записан")
-#
-#     return {'message': f'Файл {file.filename} получен\n Сохраним в {save_path}'}
 
 @app.post("/upload/")
 async def upload_image(file: UploadFile = File(...)):
@@ -102,22 +77,48 @@ async def upload_image(file: UploadFile = File(...)):
     except Exception:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Не удалось сохранить файл.")
 
-    save_path = image_dir/new_filename
+    save_path = image_dir / new_filename
     return {'message': f'Файл {file.filename} получен\n Сохраним в {save_path}'}
 
-# Пробрасываем /static/images/ -> ./images/
-app.mount("/static/images", StaticFiles(directory="images"), name="images")
+
+# Маршрут для страницы галереи изображений
+@app.get("/images", response_class=HTMLResponse)
+async def list_images(request: Request):
+    images_data = []
+    for filename in os.listdir(image_dir):
+        file_path = os.path.join(image_dir, filename)
+        # Проверяем, что это файл и что его расширение соответствует изображению
+        if os.path.isfile(file_path) and filename.lower().endswith(('.png', '.jpg', '.gif')):
+            image_url = f"/{image_dir}/{filename}"
+            images_data.append({
+                "name": filename,
+                "url": image_url,
+            })
+
+    images_data.sort(key=lambda x: x['name'].lower())  # Сортируем по имени
+
+    # images.html - шаблон для галереи
+    return templates.TemplateResponse("images.html", {"request": request, "images": images_data})
 
 
-@app.get("/images/", response_class=HTMLResponse)
-async def get_images(request: Request):
-    images_folder = "images"
-    image_files = [
-        f"/static/images/{file}"
-        for file in os.listdir(images_folder)
-        if file.lower().endswith((".jpg", ".png", ".gif"))
-    ]
-    return templates.TemplateResponse("gallery.html", {"request": request, "images": image_files})
+# Маршрут для удаления файла
+@app.delete("/delete-image/{filename}")
+async def delete_image_endpoint(filename: str):
+    file_path = os.path.join(image_dir, filename)
+
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Файл не найден.")
+
+    # Дополнительная проверка, чтобы убедиться, что файл находится внутри UPLOAD_DIRECTORY
+    if not os.path.commonprefix([os.path.realpath(file_path), os.path.realpath(image_dir)]) == os.path.realpath(
+            image_dir):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Недопустимый путь к файлу.")
+
+    try:
+        os.remove(file_path)
+        return {"message": f"Файл {filename} успешно удален."}
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Не удалось удалить файл: {e}")
 
 
 if __name__ == '__main__':
