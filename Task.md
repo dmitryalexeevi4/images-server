@@ -51,7 +51,7 @@
 4. Настроить Docker Volumes для долговременного хранения изображений и логов.
 5. Реализовать интерфейс для взаимодействия с пользователем (загрузка изображений и доступ к файлам).
 
-Дизай - https://www.figma.com/design/ivhGgfIBMDsA2xF3qospb6/image-hosting?node-id=0-1&p=f
+Дизайн - https://www.figma.com/design/ivhGgfIBMDsA2xF3qospb6/image-hosting?node-id=0-1&p=f
 
 ------
 

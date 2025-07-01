@@ -1,0 +1,201 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f0f2f5; /* Светло-серый фон */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Выравнивание по верху для заголовка */
+    min-height: 100vh;
+    margin: 0;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+.container {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* Мягкая тень */
+    padding: 40px;
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.subtitle {
+    font-size: 16px;
+    color: #777;
+    margin-bottom: 30px;
+}
+
+.upload-tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    font-weight: 500;
+    font-size: 17px;
+}
+
+.upload-tabs span, .upload-tabs .tab-link {
+    padding: 8px 15px;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.3s ease;
+    text-decoration: none; /* Убираем подчеркивание у ссылки */
+}
+
+.upload-tabs span:hover, .upload-tabs .tab-link:hover {
+    color: #007bff;
+}
+
+.upload-tabs .active-tab {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+}
+
+/* Стили для формы загрузки */
+.upload-form {
+    width: 100%;
+}
+
+.upload-area {
+    border: 2px dashed #a0c4ff;
+    border-radius: 10px;
+    padding: 50px 20px;
+    background-color: #f8fbff;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    box-sizing: border-box;
+    cursor: pointer; /* Показываем, что область кликабельна */
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.upload-area:hover {
+    border-color: #007bff; /* Изменяем цвет границы при наведении */
+    background-color: #e6f0ff; /* Слегка темнее фон */
+}
+
+.upload-icon svg {
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+.drag-text {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.support-text {
+    font-size: 14px;
+    color: #999;
+    line-height: 1.5;
+}
+
+/* Стили для кнопки "BROWSE YOUR FILE" */
+.browse-button {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 15px 30px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+}
+
+.browse-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+/* Секция "Current Upload" */
+.current-upload {
+    text-align: left;
+    width: 100%;
+}
+
+.current-upload h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.upload-link-container {
+    display: flex;
+    align-items: center;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+}
+
+.upload-link-container .prefix {
+    color: #777;
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+.upload-link-input {
+    flex-grow: 1;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    color: #333;
+    padding: 5px 0;
+    outline: none;
+}
+
+.upload-link-input::placeholder {
+    color: #bbb;
+}
+
+.copy-button {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 10px;
+}
+
+.copy-button:hover {
+    background-color: #0056b3;
+}
+
+.upload-area.drag-over {
+    border-color: #0056b3; /* Более темный синий при перетаскивании */
+    background-color: #d1e3ff; /* Еще более светлый фон */
+}
+
+/* Стили для состояния ошибки "Upload failed" */
+.upload-area.upload-failed {
+    border: 2px dashed red; /* Красная пунктирная рамка */
+    background-color: #ffe6e6; /* Очень светлый красный фон */
+}
+
+.upload-area.upload-failed .drag-text {
+    color: red; /* Красный текст ошибки */
+}

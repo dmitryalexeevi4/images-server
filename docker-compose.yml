@@ -1,7 +1,7 @@
 services:
   app:
     build: .
-    container_name: images_server_app
+    container_name: images-server-app
     restart: unless-stopped
     volumes:
       - ./images:/app/images
@@ -13,7 +13,7 @@ services:
 
   nginx:
     image: nginx:1.27
-    container_name: images_server_nginx
+    container_name: images-server-nginx
     depends_on:
       - app
     volumes:

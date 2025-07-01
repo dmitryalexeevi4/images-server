@@ -2,20 +2,50 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Сервер картинок</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Загрузка картинок</title>
+    <link rel="stylesheet" href="templates/css/upload.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <h1>Загрузить картинку</h1>
-    <ul>
-    <li><a href="/upload">Загрузить изображение</a></li>
-    <li><a href="/images">Посмотреть изображения</a></li>
-    </ul>
+    <div class="container">
+        <h1>Upload Photos</h1>
+        <p class="subtitle">Upload selfies, memes, or any fun pictures here.</p>
 
-    <form action="/upload/" enctype="multipart/form-data" method="post">
-        <input type="file" name="file" accept=".jpg, .png, .gif" required>
-        <br>
-        <input type="submit" value="Загрузить">
-    </form>
+        <div class="upload-tabs">
+            <span class="active-tab">Upload</span>
+            <a href="/images" class="tab-link">Images</a>
+        </div>
+
+        <form action="/upload/" enctype="multipart/form-data" method="post" class="upload-form">
+            <div class="upload-area" id="upload-area">
+                <div class="upload-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-cloud">
+                        <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+                    </svg>
+                </div>
+                <p class="drag-text">Select a file or drag and drop here.</p>
+                <p class="support-text">Only support .jpg, .png and .gif.<br>Maximum file size is 5MB</p>
+
+                <input type="file" name="file" id="file-input" accept=".jpg, .png, .gif" required style="display: none;">
+            </div>
+
+            <button type="button" class="browse-button" id="browse-file-button">BROWSE YOUR FILE</button>
+
+            <input type="submit" class="browse-button" value="Загрузить" id="submit-upload-button">
+        </form>
+
+        <div class="current-upload">
+            <h3>Current Upload</h3>
+            <div class="upload-link-container">
+                <span class="prefix">https://</span>
+                <input type="text" class="upload-link-input" value="sharefile.xyz/file.jpg" placeholder="Your uploaded link will appear here" readonly>
+                <button class="copy-button">COPY</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="templates/js/upload_script.js"></script>
 </body>
 </html>

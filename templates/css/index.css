@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+    background-color: #1a1a1a; /* Темный фон, почти черный */
+    color: #ffffff; /* Белый текст */
+    font-family: 'Inter', sans-serif; /* Используем шрифт Inter */
+    margin: 0;
+    display: flex;
+    justify-content: center; /* Центрируем по горизонтали */
+    align-items: center; /* Центрируем по вертикали */
+    min-height: 100vh; /* Занимаем всю высоту viewport'а */
+    overflow: hidden; /* Убираем возможные полосы прокрутки */
+}
+
+.container {
+    text-align: center; /* Выравниваем текст по центру внутри контейнера */
+    max-width: 800px; /* Ограничиваем ширину контента */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+h1 {
+    font-size: 32px; /* Размер заголовка */
+    font-weight: 600; /* Полужирный */
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.subtitle {
+    font-size: 18px;
+    color: #ccc; /* Светло-серый для подзаголовка */
+    margin-bottom: 40px; /* Отступ до кнопки */
+}
+
+.main-button {
+    display: inline-block; /* Делаем ссылку блочным элементом, чтобы задать отступы и фон */
+    background-color: #007bff; /* Синий фон кнопки */
+    color: #ffffff; /* Белый текст кнопки */
+    padding: 15px 30px;
+    border-radius: 8px; /* Слегка закругленные углы */
+    text-decoration: none; /* Убираем подчеркивание у ссылки */
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase; /* Текст заглавными буквами */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Плавный переход при наведении */
+    margin-bottom: 60px; /* Отступ до изображения */
+    letter-spacing: 0.5px; /* Небольшой межбуквенный интервал */
+}
+
+.main-button:hover {
+    background-color: #0056b3; /* Темнее синий при наведении */
+    transform: translateY(-2px); /* Небольшой эффект поднятия */
+}
+
+.cat-image-container {
+    /* Контейнер для изображения, чтобы можно было контролировать его положение/размер */
+    margin-top: 20px; /* Отступ сверху от кнопки */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Если кот должен быть ниже и занимать большую часть экрана */
+    /* Убедитесь, что изображение достаточно большое и имеет прозрачный фон, если нужно */
+}
+
+.cat-image {
+    max-width: 100%; /* Изображение не будет выходить за пределы контейнера */
+    height: auto; /* Сохраняем пропорции */
+    display: block; /* Убираем лишние отступы под изображением */
+    margin: 0 auto; /* Центрируем изображение */
+    /* Возможно, потребуется задать определенную высоту или ширину, если изображение маленькое */
+    max-height: 50vh; /* Чтобы кот не был слишком большим на высоких экранах */
+    object-fit: contain; /* Обеспечивает, что изображение вписывается в контейнер */
+}
+
+/* Если вы хотите полностью скрыть исходные ссылки */
+/* .hidden-links {
+    display: none;
+} */
