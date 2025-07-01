@@ -6,7 +6,6 @@
     <title>Сервер картинок</title>
     <link rel="stylesheet" href="templates/css/index.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
 </head>
 <body>
 
@@ -16,11 +15,10 @@
 
         <a href="/upload" class="main-button">TAIL-ENT SHOWCASE</a>
 
-        <div class="cat-image-container">
-             <img src="templates/page_pics/cat-image.png" alt="Кот в воротнике" class="cat-image">
+        <div class="random-image-container">
+             <img src="{{ random_image_url }}" alt="Случайное изображение" class="random-image">
         </div>
-
-    </div>
+        </div>
 
 </body>
 </html>

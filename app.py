@@ -1,5 +1,6 @@
 import logging
 import os
+import random
 from pathlib import Path
 
 import uvicorn
@@ -40,10 +41,20 @@ templates = Jinja2Templates(directory="templates")
 MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024  # 5 MB
 ALLOWED_MIME_TYPES = ["image/jpeg", "image/png", "image/gif"]
 
+RANDOM_PICS = [
+    "/templates/page_pics/cat.png",
+    "/templates/page_pics/bird.png",
+    "/templates/page_pics/dog.png",
+]
 
+
+# Маршрут для главной страницы
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    # Случайно выбираем изображение из списка
+    selected_image_url = random.choice(RANDOM_PICS)
+    # Передаем выбранное изображение в шаблон index.html
+    return templates.TemplateResponse("index.html", {"request": request, "random_image_url": selected_image_url})
 
 
 @app.get("/upload", response_class=HTMLResponse)
