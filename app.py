@@ -16,7 +16,7 @@ logs_dir.mkdir(exist_ok=True)
 log_file = logs_dir / "app.log"
 
 logging.basicConfig(
-    level=logging.ERROR,
+    level=logging.INFO,
     format="[{asctime}] - {levelname}: {message}",
     style="{",
     handlers=[
@@ -51,6 +51,7 @@ RANDOM_PICS = [
 # Маршрут для главной страницы
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
+    logging.info('Открыта главная страница сервера изображений')
     # Случайно выбираем изображение из списка
     selected_image_url = random.choice(RANDOM_PICS)
     # Передаем выбранное изображение в шаблон index.html
@@ -59,42 +60,51 @@ async def read_root(request: Request):
 
 @app.get("/upload", response_class=HTMLResponse)
 async def upload_img(request: Request):
+    logging.info('Выполнен переход на страницу загрузки файла')
     return templates.TemplateResponse("upload.html", {"request": request})
 
 
-@app.post("/upload/")
-async def upload_image(file: UploadFile = File(...)):
+@app.post("/upload")
+async def upload_image(request: Request, file: UploadFile = File(...)):
+    logging.info("Попытка Загрузки файла")
     # 1. Валидация MIME-типа
     if file.content_type not in ALLOWED_MIME_TYPES:
+        error_text = f"Недопустимый тип файла. Разрешены только {', '.join(t.split('/')[1] for t in ALLOWED_MIME_TYPES)}."
+        logging.error(error_text)
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Недопустимый тип файла. Разрешены только {', '.join(t.split('/')[1] for t in ALLOWED_MIME_TYPES)}."
+            detail=error_text
         )
 
     # 2. Валидация размера файла
     file_content = await file.read()  # Читаем весь файл в память для проверки размера
     if len(file_content) > MAX_FILE_SIZE_BYTES:
+        error_text = f"Размер файла превышает {MAX_FILE_SIZE_BYTES / (1024 * 1024)}MB."
+        logging.error(error_text)
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Размер файла превышает {MAX_FILE_SIZE_BYTES / (1024 * 1024)}MB."
+            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+            detail=error_text
         )
 
     # 3. Сохранение файла, если валидация пройдена
     new_filename = get_unique_name(Path(file.filename))
     file_location = os.path.join(image_dir, new_filename)
     try:
+        logging.info(f"Сохранение файла в путь {file_location}")
         with open(file_location, "wb") as f:
             f.write(file_content)  # Записываем прочитанный контент
     except Exception:
+        logging.error(f"Ошибка при сохранении файла в путь {file_location}!")
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Не удалось сохранить файл.")
 
-    save_path = image_dir / new_filename
-    return {'message': f'Файл {file.filename} получен\n Сохраним в {save_path}'}
+    image_url = str(request.base_url) / image_dir / new_filename
+    return templates.TemplateResponse("upload.html", {"request": request, "image_url": image_url})
 
 
 # Маршрут для страницы галереи изображений
 @app.get("/images", response_class=HTMLResponse)
 async def list_images(request: Request):
+    logging.info("Открыта страница галереи изображений")
     images_data = []
     for filename in os.listdir(image_dir):
         file_path = os.path.join(image_dir, filename)
@@ -115,21 +125,30 @@ async def list_images(request: Request):
 # Маршрут для удаления файла
 @app.delete("/delete-image/{filename}")
 async def delete_image_endpoint(filename: str):
+    logging.info(f"Попытка удаления файла {filename}")
     file_path = os.path.join(image_dir, filename)
 
     if not os.path.exists(file_path):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Файл не найден.")
+        message = "Файл не найден."
+        logging.error(message)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=message)
 
     # Дополнительная проверка, чтобы убедиться, что файл находится внутри UPLOAD_DIRECTORY
     if not os.path.commonprefix([os.path.realpath(file_path), os.path.realpath(image_dir)]) == os.path.realpath(
             image_dir):
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Недопустимый путь к файлу.")
+        message = "Недопустимый путь к файлу."
+        logging.error(message)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=message)
 
     try:
+        message = f"Файл {filename} успешно удален."
         os.remove(file_path)
-        return {"message": f"Файл {filename} успешно удален."}
+        logging.info(message)
+        return {"message": message}
     except Exception as e:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Не удалось удалить файл: {e}")
+        message = f"Не удалось удалить файл: {e}"
+        logging.error(message)
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=message)
 
 
 if __name__ == '__main__':

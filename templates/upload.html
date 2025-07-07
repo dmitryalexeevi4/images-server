@@ -18,7 +18,7 @@
             <a href="/images" class="tab-link">Images</a>
         </div>
 
-        <form action="/upload/" enctype="multipart/form-data" method="post" class="upload-form">
+        <form action="/upload" enctype="multipart/form-data" method="post" class="upload-form">
             <div class="upload-area" id="upload-area">
                 <div class="upload-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-cloud">
@@ -33,14 +33,13 @@
 
             <button type="button" class="browse-button" id="browse-file-button">BROWSE YOUR FILE</button>
 
-            <input type="submit" class="browse-button" value="Загрузить" id="submit-upload-button">
+            <input type="submit" class="browse-button" value="UPLOAD" id="submit-upload-button">
         </form>
 
         <div class="current-upload">
             <h3>Current Upload</h3>
             <div class="upload-link-container">
-                <span class="prefix">https://</span>
-                <input type="text" class="upload-link-input" value="sharefile.xyz/file.jpg" placeholder="Your uploaded link will appear here" readonly>
+                <input type="text" class="upload-link-input" value="{{ image_url }}" placeholder="https://" readonly>
                 <button class="copy-button">COPY</button>
             </div>
         </div>

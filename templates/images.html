@@ -32,11 +32,11 @@
                 <tbody>
                     {% for img in images %}
                     <tr id="image-row-{{ img.name | replace('.', '-') }}"> {# Добавляем ID для удобства удаления строки #}
-                        <td><i data-feather="check-square" class="table-icon"></i></td> <td class="file-name">{{ img.name }}</td>
+                        <td><img src="templates/page_pics/pic-icon.png" class="table-icon"></td> <td class="file-name">{{ img.name }}</td>
                         <td><a href="{{ img.url }}" target="_blank" class="image-url">{{ img.url }}</a></td>
                         <td>
                             <button class="delete-button" data-filename="{{ img.name }}">
-                                <i data-feather="trash-2"></i> </button>
+                                <img src="templates/page_pics/delete.png" width="30" height="30"> </button>
                         </td>
                     </tr>
                     {% else %}

@@ -99,8 +99,8 @@ h1 {
 
 .table-icon {
     color: #28a745; /* Зеленый для иконки флажка */
-    width: 18px; /* Размер иконки */
-    height: 18px;
+    width: 16px; /* Размер иконки */
+    height: 16px;
     vertical-align: middle; /* Выравнивание по центру */
 }
 
@@ -131,25 +131,9 @@ h1 {
     transition: background-color 0.2s ease;
 }
 
-.delete-button:hover {
-    background-color: #ffebeb; /* Легкий красный фон при наведении */
-}
-
-.delete-button i {
-    color: #dc3545; /* Красный цвет для иконки корзины */
-    width: 18px;
-    height: 18px;
-}
-
 .no-images-message {
     text-align: center;
     padding: 30px;
     color: #888;
     font-style: italic;
 }
-
-/* В случае, если вы объединяете CSS для upload и images,
-   стили для upload-specific элементов (например, .upload-area, .browse-button)
-   должны быть включены здесь же.
-   Я их опущу для краткости, так как мы "вернулись" к images.
-*/
